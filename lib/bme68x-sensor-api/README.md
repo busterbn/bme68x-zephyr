@@ -28,7 +28,7 @@ See also:
 
 This Zephyr library provides [BME68X Sensor API v4.4.8].
 
-When enabled (`BME68X_SENSOR_API=y`), the usual BME68X Sensor API header files are directly accessible by application code.
+When enabled (`MY_BME68X_SENSOR_API=y`), the usual BME68X Sensor API header files are directly accessible by application code.
 
 | Header                                  | API                                          |
 |-----------------------------------------|----------------------------------------------|
@@ -40,16 +40,16 @@ The BME68X Sensor API comes in two variants: the *default* one, with floating-po
 This library overrides the default behavior to:
 
 - consistently select the API variant *once and for all* with Kconfig
-- prefer the fixed-point API unless explicitly asked to with the option `BME68X_SENSOR_API_FLOAT`
+- prefer the fixed-point API unless explicitly asked to with the option `MY_BME68X_SENSOR_API_FLOAT`
 
 > [!NOTE]
 >
 > Preference for the floating point API does not imply or depend on [`FPU`] or hardware floating-point ABI.
 >
-> Applications should rely on `BME68X_SENSOR_API_FLOAT` rather than `BME68X_USE_FPU` to avoid this confusion, e.g.:
+> Applications should rely on `MY_BME68X_SENSOR_API_FLOAT` rather than `BME68X_USE_FPU` to avoid this confusion, e.g.:
 >
 > ``` C
-> #if BME68X_SENSOR_API_FLOAT
+> #if MY_BME68X_SENSOR_API_FLOAT
 >     float temp_degC = bme68x_data.temperature;
 > #else
 >     int16_t temp_degC_x100 = bme68x_data.temperature;
@@ -65,8 +65,8 @@ Software configuration with [Kconfig].
 
 | [`Kconfig`](Kconfig)      | Configuration             |
 |---------------------------|---------------------------|
-| `BME68X_SENSOR_API`       | Enable BME68X Sensor API  |
-| `BME68X_SENSOR_API_FLOAT` | Prefer floating-point API |
+| `MY_BME68X_SENSOR_API`       | Enable BME68X Sensor API  |
+| `MY_BME68X_SENSOR_API_FLOAT` | Prefer floating-point API |
 
 [Kconfig]: https://docs.zephyrproject.org/latest/build/kconfig/index.html
 

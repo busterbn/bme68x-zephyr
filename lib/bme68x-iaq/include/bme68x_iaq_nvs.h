@@ -6,8 +6,8 @@
  * BSEC state persistence to Flash storage with Zephyr NVS.
  */
 
-#ifndef BME68X_IAQ_NVS_H_
-#define BME68X_IAQ_NVS_H_
+#ifndef MY_BME68X_IAQ_NVS_H_
+#define MY_BME68X_IAQ_NVS_H_
 
 #include <zephyr/kernel.h>
 
@@ -17,16 +17,16 @@
  * This does not imply that the application will actually initialize
  * and use this service.
  */
-#if defined(CONFIG_BME68X_IAQ_NVS)
-#define BME68X_IAQ_NVS_ENABLED 1
+#if defined(CONFIG_MY_BME68X_IAQ_NVS)
+#define MY_BME68X_IAQ_NVS_ENABLED 1
 #else
-#define BME68X_IAQ_NVS_ENABLED 0
+#define MY_BME68X_IAQ_NVS_ENABLED 0
 #endif
 
 /**
  * @brief Devicetree label of the Flash partition dedicated to this NVS file-system.
  */
-#define BME68X_IAQ_NVS_PARTITION_LABEL bsec_partition
+#define MY_BME68X_IAQ_NVS_PARTITION_LABEL bsec_partition
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,7 +37,7 @@ extern "C" {
  *
  * @return 0 on success, negative errno otherwise.
  */
-#if BME68X_IAQ_NVS_ENABLED
+#if MY_BME68X_IAQ_NVS_ENABLED
 __syscall int bme68x_iaq_nvs_init(void);
 #else
 int bme68x_iaq_nvs_init(void);
@@ -52,7 +52,7 @@ int bme68x_iaq_nvs_init(void);
  *
  * @return 0 on success, negative errno otherwise (`-ENOENT` if no saved state available).
  */
-#if BME68X_IAQ_NVS_ENABLED
+#if MY_BME68X_IAQ_NVS_ENABLED
 __syscall int bme68x_iaq_nvs_read_state(uint8_t *data, uint32_t *len);
 #else
 int bme68x_iaq_nvs_read_state(uint8_t *data, uint32_t *len);
@@ -66,7 +66,7 @@ int bme68x_iaq_nvs_read_state(uint8_t *data, uint32_t *len);
  *
  * @return 0 on success, negative errno otherwise.
  */
-#if BME68X_IAQ_NVS_ENABLED
+#if MY_BME68X_IAQ_NVS_ENABLED
 __syscall int bme68x_iaq_nvs_write_state(uint8_t const *data, uint32_t len);
 #else
 int bme68x_iaq_nvs_write_state(uint8_t const *data, uint32_t len);
@@ -79,7 +79,7 @@ int bme68x_iaq_nvs_write_state(uint8_t const *data, uint32_t len);
  *
  * @return 0 on success, negative errno otherwise (`-ENOENT` if no saved state available).
  */
-#if BME68X_IAQ_NVS_ENABLED
+#if MY_BME68X_IAQ_NVS_ENABLED
 __syscall int bme68x_iaq_nvs_delete_state(void);
 #else
 int bme68x_iaq_nvs_delete_state(void);
@@ -89,8 +89,8 @@ int bme68x_iaq_nvs_delete_state(void);
 }
 #endif
 
-#if BME68X_IAQ_NVS_ENABLED
+#if MY_BME68X_IAQ_NVS_ENABLED
 #include "syscalls/bme68x_iaq_nvs.h"
 #endif
 
-#endif /* BME68X_IAQ_NVS_H_ */
+#endif /* MY_BME68X_IAQ_NVS_H_ */

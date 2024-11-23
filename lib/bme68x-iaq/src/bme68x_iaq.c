@@ -23,28 +23,28 @@
 /* API will return -ENOSYS if NVS support is disabled. */
 #include "bme68x_iaq_nvs.h"
 
-LOG_MODULE_REGISTER(bme68x_iaq, CONFIG_BME68X_IAQ_LOG_LEVEL);
+LOG_MODULE_REGISTER(bme68x_iaq, CONFIG_MY_BME68X_IAQ_LOG_LEVEL);
 
 /*
  * Sample rate of the BSEC virtual sensor:
  * - LP: 1/3 Hz
  * - ULP: 1/300 Hz
  */
-#if defined(CONFIG_BME68X_IAQ_SAMPLE_RATE_LP)
-#define BME68X_IAQ_SAMPLE_RATE BSEC_SAMPLE_RATE_LP
-#elif defined(CONFIG_BME68X_IAQ_SAMPLE_RATE_ULP)
-#define BME68X_IAQ_SAMPLE_RATE BSEC_SAMPLE_RATE_ULP
+#if defined(CONFIG_MY_BME68X_IAQ_SAMPLE_RATE_LP)
+#define MY_BME68X_IAQ_SAMPLE_RATE BSEC_SAMPLE_RATE_LP
+#elif defined(CONFIG_MY_BME68X_IAQ_SAMPLE_RATE_ULP)
+#define MY_BME68X_IAQ_SAMPLE_RATE BSEC_SAMPLE_RATE_ULP
 #endif
 
 /*
  * Initial temperature used to compute heater resistance,
  * aka expected temperature, in degree Celsius.
  */
-#define BME68X_IAQ_AMBIENT_TEMP INT8_C(CONFIG_BME68X_IAQ_AMBIENT_TEMP)
+#define MY_BME68X_IAQ_AMBIENT_TEMP INT8_C(CONFIG_MY_BME68X_IAQ_AMBIENT_TEMP)
 
-#if defined(CONFIG_BME68X_IAQ_STATE_SAVE_INTVL) && (CONFIG_BME68X_IAQ_STATE_SAVE_INTVL > 0)
+#if defined(CONFIG_MY_BME68X_IAQ_STATE_SAVE_INTVL) && (CONFIG_MY_BME68X_IAQ_STATE_SAVE_INTVL > 0)
 /* BSEC state saves periodicity in minutes. */
-#define BME68X_IAQ_STATE_SAVE_INTVL CONFIG_BME68X_IAQ_STATE_SAVE_INTVL
+#define MY_BME68X_IAQ_STATE_SAVE_INTVL CONFIG_MY_BME68X_IAQ_STATE_SAVE_INTVL
 /*
  * Dedicated timer:
  * - started just before entering the BSEC control loop
@@ -65,7 +65,7 @@ static void iaq_bsec_save_state(void);
 
 #else
 /* No periodic BSEC state persistence. */
-#define BME68X_IAQ_STATE_SAVE_INTVL 0
+#define MY_BME68X_IAQ_STATE_SAVE_INTVL 0
 #endif
 
 /*
@@ -187,55 +187,55 @@ static void iaq_sample_set_outputs(int64_t ts_ns, bsec_output_t const *bsec_outp
 static bsec_sensor_configuration_t const iaq_virt_sensors[] = {
 	{
 		.sensor_id = BSEC_OUTPUT_RAW_TEMPERATURE,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_TEMPERATURE,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_RAW_PRESSURE,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_RAW_HUMIDITY,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_HUMIDITY,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_RAW_GAS,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_IAQ,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_STATIC_IAQ,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_CO2_EQUIVALENT,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_BREATH_VOC_EQUIVALENT,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_GAS_PERCENTAGE,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_RUN_IN_STATUS,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 	{
 		.sensor_id = BSEC_OUTPUT_STABILIZATION_STATUS,
-		.sample_rate = BME68X_IAQ_SAMPLE_RATE,
+		.sample_rate = MY_BME68X_IAQ_SAMPLE_RATE,
 	},
 };
 
@@ -257,12 +257,12 @@ int bme68x_iaq_init(void)
 		return ret;
 	}
 
-	if (BME68X_IAQ_NVS_ENABLED) {
+	if (MY_BME68X_IAQ_NVS_ENABLED) {
 		ret = bme68x_iaq_nvs_init();
 		if (!ret) {
-			if (BME68X_IAQ_STATE_SAVE_INTVL) {
+			if (MY_BME68X_IAQ_STATE_SAVE_INTVL) {
 				LOG_INF("BSEC state save period: %u min",
-					BME68X_IAQ_STATE_SAVE_INTVL);
+					MY_BME68X_IAQ_STATE_SAVE_INTVL);
 			}
 
 			ret = iaq_bsec_load_state();
@@ -282,11 +282,11 @@ void bme68x_iaq_run(struct bme68x_dev *dev, bme68x_iaq_output_cb iaq_output_hand
 	bsec_bme_settings_t sensor_settings = {0};
 
 	/* Initialize temperature used to compute heater resistance. */
-	dev->amb_temp = BME68X_IAQ_AMBIENT_TEMP;
+	dev->amb_temp = MY_BME68X_IAQ_AMBIENT_TEMP;
 
-#if BME68X_IAQ_STATE_SAVE_INTVL
+#if MY_BME68X_IAQ_STATE_SAVE_INTVL
 	/* Enable periodic BSEC state persistence. */
-	k_timer_start(&iaq_state_save_timer, K_MINUTES(BME68X_IAQ_STATE_SAVE_INTVL), K_NO_WAIT);
+	k_timer_start(&iaq_state_save_timer, K_MINUTES(MY_BME68X_IAQ_STATE_SAVE_INTVL), K_NO_WAIT);
 #endif
 
 	/*
@@ -360,7 +360,7 @@ void bme68x_iaq_run(struct bme68x_dev *dev, bme68x_iaq_output_cb iaq_output_hand
 			dev->amb_temp = (int8_t)iaq_sample.temperature;
 		}
 
-#if BME68X_IAQ_STATE_SAVE_INTVL
+#if MY_BME68X_IAQ_STATE_SAVE_INTVL
 		if (!k_timer_remaining_get(&iaq_state_save_timer)) {
 			/* Save state to NVS and restart timer on success. */
 			iaq_bsec_save_state();
@@ -378,7 +378,7 @@ void bme68x_iaq_run(struct bme68x_dev *dev, bme68x_iaq_output_cb iaq_output_hand
 		k_sleep(K_NSEC(next_rdv_ns));
 	}
 
-#if BME68X_IAQ_STATE_SAVE_INTVL
+#if MY_BME68X_IAQ_STATE_SAVE_INTVL
 	k_timer_stop(&iaq_state_save_timer);
 #endif
 }
@@ -443,7 +443,7 @@ int iaq_bsec_load_state(void)
 	return ret;
 }
 
-#if BME68X_IAQ_STATE_SAVE_INTVL
+#if MY_BME68X_IAQ_STATE_SAVE_INTVL
 void iaq_bsec_save_state(void)
 {
 	/* NOTE: stack size > 221 + 4086 (4307 bytes). */
@@ -468,7 +468,7 @@ void iaq_bsec_save_state(void)
 
 	} else {
 		LOG_INF("saved BSEC state (%u bytes)", len);
-		k_timer_start(&iaq_state_save_timer, K_MINUTES(BME68X_IAQ_STATE_SAVE_INTVL),
+		k_timer_start(&iaq_state_save_timer, K_MINUTES(MY_BME68X_IAQ_STATE_SAVE_INTVL),
 			      K_NO_WAIT);
 	}
 }
@@ -523,7 +523,7 @@ size_t iaq_bsec_set_inputs(bsec_bme_settings_t const *sensor_settings, int64_t t
 	if (sensor_settings->process_data & BSEC_PROCESS_TEMPERATURE) {
 		bsec_inputs[n_inputs].sensor_id = BSEC_INPUT_TEMPERATURE;
 		bsec_inputs[n_inputs].time_stamp = ts_ns;
-		if (BME68X_SENSOR_API_FLOAT) {
+		if (MY_BME68X_SENSOR_API_FLOAT) {
 			/* Temperature from BME68X API is floating-point degC. */
 			bsec_inputs[n_inputs].signal = bme68x_data->temperature;
 		} else {
@@ -539,7 +539,7 @@ size_t iaq_bsec_set_inputs(bsec_bme_settings_t const *sensor_settings, int64_t t
 	if (sensor_settings->process_data & BSEC_PROCESS_HUMIDITY) {
 		bsec_inputs[n_inputs].sensor_id = BSEC_INPUT_HUMIDITY;
 		bsec_inputs[n_inputs].time_stamp = ts_ns;
-		if (BME68X_SENSOR_API_FLOAT) {
+		if (MY_BME68X_SENSOR_API_FLOAT) {
 			/*
 			 * Relative humidity from BME68X API is floating-point percentage.
 			 */

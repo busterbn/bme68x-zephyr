@@ -181,9 +181,9 @@ Software configuration is done with [Kconfig].
 
 | [`Kconfig`](Kconfig)                           | Configuration                                              |
 |------------------------------------------------|------------------------------------------------------------|
-| `BME68X_SENSOR_API_DRIVER`                     | Enable BME68X Sensor API (Driver)                          |
-| `BME68X_SENSOR_API_DRIVER_INIT_PRIORITY (=99)` | Relative initialization priority ([Initialization Levels]) |
-| `BME68X_SENSOR_API_DRIVER_LOG_LEVEL`           | Maximum log level                                          |
+| `MY_BME68X_SENSOR_API_DRIVER`                     | Enable BME68X Sensor API (Driver)                          |
+| `MY_BME68X_SENSOR_API_DRIVER_INIT_PRIORITY (=99)` | Relative initialization priority ([Initialization Levels]) |
+| `MY_BME68X_SENSOR_API_DRIVER_LOG_LEVEL`           | Maximum log level                                          |
 
 [Kconfig]: https://docs.zephyrproject.org/latest/build/kconfig/index.html
 [Initialization Levels]: https://docs.zephyrproject.org/latest/kernel/drivers/index.html#initialization-levels

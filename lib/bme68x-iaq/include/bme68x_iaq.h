@@ -7,8 +7,8 @@
  * and the BME68X Sensor API.
  */
 
-#ifndef BME68X_IAQ_H_
-#define BME68X_IAQ_H_
+#ifndef MY_BME68X_IAQ_H_
+#define MY_BME68X_IAQ_H_
 
 #include "bme68x_defs.h"
 
@@ -19,21 +19,21 @@ extern "C" {
 /** BSEC output signal accuracy. */
 enum bme68x_iaq_accuracy {
 	/** Sensor data is unreliable, the sensor must be calibrated. */
-	BME68X_IAQ_ACCURACY_UNRELIABLE = 0,
+	MY_BME68X_IAQ_ACCURACY_UNRELIABLE = 0,
 	/** Reliability of virtual sensor is low, sensor should be calibrated. */
-	BME68X_IAQ_ACCURACY_LOW,
+	MY_BME68X_IAQ_ACCURACY_LOW,
 	/** Medium reliability, sensor calibration or training may improve. */
-	BME68X_IAQ_ACCURACY_MEDIUM,
+	MY_BME68X_IAQ_ACCURACY_MEDIUM,
 	/** High reliability. */
-	BME68X_IAQ_ACCURACY_HIGH,
+	MY_BME68X_IAQ_ACCURACY_HIGH,
 };
 
 /** Stabilization status. */
 enum bme68x_iaq_status {
 	/** Stabilization is ongoing. */
-	BME68X_IAQ_STAB_ONGOING = 0,
+	MY_BME68X_IAQ_STAB_ONGOING = 0,
 	/** Stabilization is finished. */
-	BME68X_IAQ_STAB_FINISHED,
+	MY_BME68X_IAQ_STAB_FINISHED,
 };
 
 /**
@@ -131,4 +131,4 @@ void bme68x_iaq_run(struct bme68x_dev *dev, bme68x_iaq_output_cb iaq_output_hand
 }
 #endif
 
-#endif /* BME68X_IAQ_H_ */
+#endif /* MY_BME68X_IAQ_H_ */

@@ -8,8 +8,8 @@
 
 #include "bme68x_defs.h"
 
-#ifndef DRIVERS_BME68X_SENSOR_API_H_
-#define DRIVERS_BME68X_SENSOR_API_H_
+#ifndef DRIVERS_MY_BME68X_SENSOR_API_H_
+#define DRIVERS_MY_BME68X_SENSOR_API_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,4 +33,4 @@ int bme68x_sensor_api_init(struct device const *dev, struct bme68x_dev *bme68x_d
 }
 #endif
 
-#endif /* DRIVERS_BME68X_SENSOR_API_H_ */
+#endif /* DRIVERS_MY_BME68X_SENSOR_API_H_ */

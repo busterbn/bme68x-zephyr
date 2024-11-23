@@ -20,19 +20,19 @@
 /*
  * NVSFS identifier for the state's length.
  */
-#define BME68X_IAQ_NVS_BSEC_STATE_LEN_ID 1U
+#define MY_BME68X_IAQ_NVS_BSEC_STATE_LEN_ID 1U
 
 /*
  * NVSFS identifier for the state's data.
  */
-#define BME68X_IAQ_NVS_BSEC_STATE_BLOB_ID 2U
+#define MY_BME68X_IAQ_NVS_BSEC_STATE_BLOB_ID 2U
 
-#define BME68X_IAQ_NVS_PARTITION_DEVICE FIXED_PARTITION_DEVICE(BME68X_IAQ_NVS_PARTITION_LABEL)
-#define BME68X_IAQ_NVS_PARTITION_OFFSET FIXED_PARTITION_OFFSET(BME68X_IAQ_NVS_PARTITION_LABEL)
+#define MY_BME68X_IAQ_NVS_PARTITION_DEVICE FIXED_PARTITION_DEVICE(MY_BME68X_IAQ_NVS_PARTITION_LABEL)
+#define MY_BME68X_IAQ_NVS_PARTITION_OFFSET FIXED_PARTITION_OFFSET(MY_BME68X_IAQ_NVS_PARTITION_LABEL)
 
-LOG_MODULE_DECLARE(bme68x_iaq, CONFIG_BME68X_IAQ_LOG_LEVEL);
+LOG_MODULE_DECLARE(bme68x_iaq, CONFIG_MY_BME68X_IAQ_LOG_LEVEL);
 
-#if !BME68X_IAQ_NVS_ENABLED
+#if !MY_BME68X_IAQ_NVS_ENABLED
 int bme68x_iaq_nvs_init(void)
 {
 	LOG_WRN("NVS support disabled");
@@ -67,14 +67,14 @@ static struct nvs_fs nvsfs;
 
 int z_impl_bme68x_iaq_nvs_init(void)
 {
-	nvsfs.flash_device = BME68X_IAQ_NVS_PARTITION_DEVICE;
+	nvsfs.flash_device = MY_BME68X_IAQ_NVS_PARTITION_DEVICE;
 	if (!device_is_ready(nvsfs.flash_device)) {
 		LOG_ERR("flash device not ready: %s", nvsfs.flash_device->name);
 		return -ENODEV;
 	}
 
 	struct flash_pages_info page_info;
-	nvsfs.offset = BME68X_IAQ_NVS_PARTITION_OFFSET;
+	nvsfs.offset = MY_BME68X_IAQ_NVS_PARTITION_OFFSET;
 	int ret = flash_get_page_info_by_offs(nvsfs.flash_device, nvsfs.offset, &page_info);
 
 	if (!ret) {
@@ -170,7 +170,7 @@ int z_vrfy_bme68x_iaq_nvs_delete_state(void)
 int read_bsec_state_len(uint32_t *len)
 {
 	size_t sz_state_len = sizeof(*len);
-	ssize_t ret = nvs_read(&nvsfs, BME68X_IAQ_NVS_BSEC_STATE_LEN_ID, len, sz_state_len);
+	ssize_t ret = nvs_read(&nvsfs, MY_BME68X_IAQ_NVS_BSEC_STATE_LEN_ID, len, sz_state_len);
 
 	if (ret == sz_state_len) {
 		/* On success, returns the number of bytes requested to be read. */
@@ -197,7 +197,7 @@ int read_bsec_state_len(uint32_t *len)
 
 int read_bsec_state_blob(uint8_t *state, uint32_t len)
 {
-	ssize_t ret = nvs_read(&nvsfs, BME68X_IAQ_NVS_BSEC_STATE_BLOB_ID, state, len);
+	ssize_t ret = nvs_read(&nvsfs, MY_BME68X_IAQ_NVS_BSEC_STATE_BLOB_ID, state, len);
 
 	if (ret == len) {
 		return 0;
@@ -219,7 +219,7 @@ int read_bsec_state_blob(uint8_t *state, uint32_t len)
 int write_bsec_state_len(uint32_t len)
 {
 	size_t sz_state_len = sizeof(len);
-	ssize_t ret = nvs_write(&nvsfs, BME68X_IAQ_NVS_BSEC_STATE_LEN_ID, &len, sz_state_len);
+	ssize_t ret = nvs_write(&nvsfs, MY_BME68X_IAQ_NVS_BSEC_STATE_LEN_ID, &len, sz_state_len);
 
 	if (ret < 0) {
 		/* On error, returns negative value of errno.h defined error codes. */
@@ -240,7 +240,7 @@ int write_bsec_state_len(uint32_t len)
 
 int write_bsec_state_blob(uint8_t const *data, uint32_t len)
 {
-	ssize_t ret = nvs_write(&nvsfs, BME68X_IAQ_NVS_BSEC_STATE_BLOB_ID, data, len);
+	ssize_t ret = nvs_write(&nvsfs, MY_BME68X_IAQ_NVS_BSEC_STATE_BLOB_ID, data, len);
 
 	if (ret < 0) {
 		LOG_ERR("failed to write STATE_BLOB: %d", ret);
@@ -256,7 +256,7 @@ int write_bsec_state_blob(uint8_t const *data, uint32_t len)
 
 int delete_bsec_state_len(void)
 {
-	int ret = nvs_delete(&nvsfs, BME68X_IAQ_NVS_BSEC_STATE_LEN_ID);
+	int ret = nvs_delete(&nvsfs, MY_BME68X_IAQ_NVS_BSEC_STATE_LEN_ID);
 	if (ret && (ret != -ENOENT)) {
 		LOG_ERR("failed to delete STATE_LEN: %d", ret);
 	}
@@ -265,11 +265,11 @@ int delete_bsec_state_len(void)
 
 int delete_bsec_state_blob(void)
 {
-	int ret = nvs_delete(&nvsfs, BME68X_IAQ_NVS_BSEC_STATE_BLOB_ID);
+	int ret = nvs_delete(&nvsfs, MY_BME68X_IAQ_NVS_BSEC_STATE_BLOB_ID);
 	if (ret && (ret != -ENOENT)) {
 		LOG_ERR("failed to delete STATE_BLOB: %d", ret);
 	}
 	return ret;
 }
 
-#endif /* BME68X_IAQ_NVS_ENABLED */
+#endif /* MY_BME68X_IAQ_NVS_ENABLED */

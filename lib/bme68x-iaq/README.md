@@ -24,8 +24,8 @@ This library should be enabled with [Kconfig].
 
 | [`Kconfig`]                    | Option                               |
 |--------------------------------|--------------------------------------|
-| `BME68X_IAQ (=n)`              | Enable Support library for BSEC IAQ  |
-| `BME68X_IAQ_NVS (=n)`          | Enable BSEC state persistence to NVS |
+| `MY_BME68X_IAQ (=n)`              | Enable Support library for BSEC IAQ  |
+| `MY_BME68X_IAQ_NVS (=n)`          | Enable BSEC state persistence to NVS |
 
 Configuration options are accessible via the Kconfig menu: `Modules → bme68x → [*] Support library for BSEC IAQ`.
 
@@ -46,12 +46,12 @@ The BSEC algorithm configuration is selected with Kconfig options:
 
 | Option           | Value          | Kconfig                               |
 |------------------|----------------|---------------------------------------|
-| Supply voltage   | 3.3 V          | `BME68X_IAQ_33V` (default)            |
-|                  | 1.8 V          | `BME68X_IAQ_18V`                      |
-| Calibration time | 4 days         | `BME68X_IAQ_4D` (default)             |
-|                  | 28 days        | `BME68X_IAQ_28D`                      |
-| BSEC sample rate | 1/3 Hz (LP)    | `BME68X_IAQ_SAMPLE_RATE_LP` (default) |
-|                  | 1/300 Hz (ULP) | `BME68X_IAQ_SAMPLE_RATE_ULP`          |
+| Supply voltage   | 3.3 V          | `MY_BME68X_IAQ_33V` (default)            |
+|                  | 1.8 V          | `MY_BME68X_IAQ_18V`                      |
+| Calibration time | 4 days         | `MY_BME68X_IAQ_4D` (default)             |
+|                  | 28 days        | `MY_BME68X_IAQ_28D`                      |
+| BSEC sample rate | 1/3 Hz (LP)    | `MY_BME68X_IAQ_SAMPLE_RATE_LP` (default) |
+|                  | 1/300 Hz (ULP) | `MY_BME68X_IAQ_SAMPLE_RATE_ULP`          |
 
 Together, they determine the directory that contains the C header and source files for the selected BSEC configuration, e.g. `bme680_iaq_33v_3s_4d` for 3.3 V, LP, and 4 days:
 
@@ -193,7 +193,7 @@ BSEC IAQ mode with [`bme68x_iaq.h`]:
 
 - temperature, pressure, humidity and gas resistance from a single BME680/688 device as physical sensors (aka BSEC inputs)
 - all virtual sensors (aka BSEC outputs) supported in IAQ mode
-- BSEC state persistence: loads state on initialization if available, saves state with configurable periodicity (`BME68X_IAQ_STATE_SAVE_INTVL`) once the IAQ control loop is started
+- BSEC state persistence: loads state on initialization if available, saves state with configurable periodicity (`MY_BME68X_IAQ_STATE_SAVE_INTVL`) once the IAQ control loop is started
 
 1. Implement the IAQ output handler:
 
@@ -204,7 +204,7 @@ void iaq_output_handler(struct bme68x_iaq_sample const *iaq_sample)
     /*
      * Do something with the IAQ sample.
      */
-    if ((iaq_sample->iaq > 400) && (iaq_sample->iaq_accuracy >= BME68X_IAQ_ACCURACY_MEDIUM))  {
+    if ((iaq_sample->iaq > 400) && (iaq_sample->iaq_accuracy >= MY_BME68X_IAQ_ACCURACY_MEDIUM))  {
         printf("Run away!\n");
     }
 }
@@ -230,7 +230,7 @@ void iaq_output_handler(struct bme68x_iaq_sample const *iaq_sample)
     bme68x_iaq_init();
 ```
 
-3. Run the BSEC control loop until unrecoverable error, receiving IAQ output samples when available, periodically saving state according to `BME68X_IAQ_STATE_SAVE_INTVL`:
+3. Run the BSEC control loop until unrecoverable error, receiving IAQ output samples when available, periodically saving state according to `MY_BME68X_IAQ_STATE_SAVE_INTVL`:
 
 ``` C
     bme68x_iaq_run(&bme68x_dev, iaq_output_handler);

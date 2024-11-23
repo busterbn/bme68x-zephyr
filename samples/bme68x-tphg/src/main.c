@@ -36,7 +36,7 @@ struct k_thread bme68x_tphg_thrd;
  */
 static void bme68x_tphg_data_sink(struct bme68x_tphg_meas const *meas)
 {
-#if BME68X_SENSOR_API_FLOAT
+#if MY_BME68X_SENSOR_API_FLOAT
 	if (meas->gas_valid && meas->heatr_stab) {
 		LOG_INF("T:%.02f deg C, P:%.03f kPa, H:%.03f %%, G:%.03f kOhm",
 			(double)meas->data.temperature, (double)meas->data.pressure / 1000.0,

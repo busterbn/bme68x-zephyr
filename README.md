@@ -170,16 +170,16 @@ Top-level configuration options are summarized bellow.
 
 | Library                     | Kconfig                    | Configuration                            |
 |-----------------------------|----------------------------|------------------------------------------|
-| [lib/bme68x-sensor-api]     | `BME68X_SENSOR_API`        | Enable BME68X Sensor API                 |
-|                             | `BME68X_SENSOR_API_FLOAT`  | Select floating-point variant of the API |
-| [drivers/bme68x-sensor-api] | `BME68X_SENSOR_API_DRIVER` | Enable BME68X Sensor API (driver)        |
+| [lib/bme68x-sensor-api]     | `MY_BME68X_SENSOR_API`        | Enable BME68X Sensor API                 |
+|                             | `MY_BME68X_SENSOR_API_FLOAT`  | Select floating-point variant of the API |
+| [drivers/bme68x-sensor-api] | `MY_BME68X_SENSOR_API_DRIVER` | Enable BME68X Sensor API (driver)        |
 | [lib/bsec]                  | `BSEC`                     | Enable BSEC library                      |
-| [lib/bme68x-iaq]            | `BME68X_IAQ`               | Enable support library for BSEC IAQ      |
-|                             | `BME68X_IAQ_NVS`           | Enable BSEC state persistence to flash   |
+| [lib/bme68x-iaq]            | `MY_BME68X_IAQ`               | Enable support library for BSEC IAQ      |
+|                             | `MY_BME68X_IAQ_NVS`           | Enable BSEC state persistence to flash   |
 
 > [!TIP]
 >
-> `BME68X_SENSOR_API_DRIVER` and `BME68X_SENSOR_API` are implied when an application devicetree contains compatible devices.
+> `MY_BME68X_SENSOR_API_DRIVER` and `MY_BME68X_SENSOR_API` are implied when an application devicetree contains compatible devices.
 
 ### Sample applications
 

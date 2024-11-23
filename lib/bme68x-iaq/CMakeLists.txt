@@ -9,9 +9,9 @@
 set(bsec_conf_root
   ${CMAKE_CURRENT_SOURCE_DIR}/config/bme680
 )
-set(bsec_conf_vdd ${CONFIG_BME68X_IAQ_VDD})
-set(bsec_conf_sr ${CONFIG_BME68X_IAQ_SAMPLE_RATE})
-set(bsec_conf_calib ${CONFIG_BME68X_IAQ_CALIB_TIME})
+set(bsec_conf_vdd ${CONFIG_MY_BME68X_IAQ_VDD})
+set(bsec_conf_sr ${CONFIG_MY_BME68X_IAQ_SAMPLE_RATE})
+set(bsec_conf_calib ${CONFIG_MY_BME68X_IAQ_CALIB_TIME})
 set(bsec_conf_name
   bme680_iaq_${bsec_conf_vdd}_${bsec_conf_sr}_${bsec_conf_calib}
 )

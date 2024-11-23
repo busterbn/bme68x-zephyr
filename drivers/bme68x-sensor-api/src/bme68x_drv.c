@@ -22,9 +22,9 @@
  *
  * See also: https://github.com/zephyrproject-rtos/zephyr/pull/73836
  */
-#define BME68X_SENSOR_API_DRIVER_INIT_PRIORITY CONFIG_BME68X_SENSOR_API_DRIVER_INIT_PRIORITY
+#define MY_BME68X_SENSOR_API_DRIVER_INIT_PRIORITY CONFIG_MY_BME68X_SENSOR_API_DRIVER_INIT_PRIORITY
 
-LOG_MODULE_REGISTER(bme68x_sensor_api, CONFIG_BME68X_SENSOR_API_DRIVER_LOG_LEVEL);
+LOG_MODULE_REGISTER(bme68x_sensor_api, CONFIG_MY_BME68X_SENSOR_API_DRIVER_LOG_LEVEL);
 
 #if BME68X_DRV_BUS_SPI
 static inline bool bme68x_is_on_spi(struct device const *dev)
@@ -80,7 +80,7 @@ int bme68x_sensor_api_init(struct device const *dev, struct bme68x_dev *bme68x_d
 	bme68x_dev->delay_us = bme68x_sensor_api_delay_us;
 
 	LOG_INF("%s (%s API)", dev->name,
-		BME68X_SENSOR_API_FLOAT ? "Floating-point" : "Fixed-point");
+		MY_BME68X_SENSOR_API_FLOAT ? "Floating-point" : "Fixed-point");
 
 	return 0;
 }
@@ -183,7 +183,7 @@ int z_vrfy_bme68x_sensor_api_check(struct device const *dev)
 		DT_INST_ON_BUS(inst, spi), (BME68X_DRV_CONFIG_SPI(inst)),                          \
 		(BME68X_DRV_CONFIG_I2C(inst)));                                                    \
 	DEVICE_DT_INST_DEFINE(inst, bme68x_drv_init, NULL, NULL, &bme68x_drv_config_##inst,        \
-			      POST_KERNEL, BME68X_SENSOR_API_DRIVER_INIT_PRIORITY, NULL);
+			      POST_KERNEL, MY_BME68X_SENSOR_API_DRIVER_INIT_PRIORITY, NULL);
 
 /* Create driver instances for enabled compatible devices. */
 DT_INST_FOREACH_STATUS_OKAY(BME68X_DRV_DEFINE)

@@ -9,11 +9,11 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <drivers/bme68x_sensor_api.h>
+#include <drivers/bme68x_sensor_api2.h>		// Chriss duff
 
-#include "bme68x.h"
+#include "bme68x.h"							// Bosch
 
-#include "bme68x_iaq.h"
+#include "bme68x_iaq2.h"						// Chriss duff (Samme navn som bosch's)
 
 LOG_MODULE_REGISTER(app, CONFIG_BME68X_SAMPLE_LOG_LEVEL);
 
@@ -76,7 +76,7 @@ struct iaq_output {
 	enum bme68x_iaq_status run_status;
 };
 
-/* Log IAQ samples. */
+/* Log IAQ samples. */										// bme68x_iaq.c	(Chriss duff)
 static void iaq_output_handler(struct bme68x_iaq_sample const *iaq_sample);
 
 int main(void)
@@ -85,23 +85,23 @@ int main(void)
 	struct device const *const dev = DEVICE_DT_GET_ONE(bosch_bme68x_sensor_api);
 
 	struct bme68x_dev bme68x_dev = {0};
-	int ret = bme68x_sensor_api_init(dev, &bme68x_dev);
+	int ret = bme68x_sensor_api_init(dev, &bme68x_dev);		// bme68x_drv.c	(Chriss duff)
 	if (!ret) {
-		ret = bme68x_init(&bme68x_dev);
+		ret = bme68x_init(&bme68x_dev);						// bme68c.h
 	}
 	if (ret) {
 		LOG_ERR("sensor initialization failed: %d", ret);
 		goto sleep_forever;
 	}
 
-	ret = bme68x_iaq_init();
+	ret = bme68x_iaq_init();								// bme68x_iaq.c	(Chriss duff)
 	if (ret) {
 		LOG_ERR("IAQ initialization failed: %d", ret);
 		goto sleep_forever;
 	}
 
 	/* Enter BSEC control loop. */
-	bme68x_iaq_run(&bme68x_dev, iaq_output_handler);
+	bme68x_iaq_run(&bme68x_dev, iaq_output_handler);		// bme68x_iaq.c	(Chriss duff)
 
 sleep_forever:
 	k_sleep(K_FOREVER);
@@ -151,14 +151,14 @@ static void iaq_output_init(struct bme68x_iaq_sample const *iaq_sample,
 void iaq_output_handler(struct bme68x_iaq_sample const *iaq_sample)
 {
 	static char const *accuracy2str[] = {
-		[BME68X_IAQ_ACCURACY_UNRELIABLE] = "unreliable",
-		[BME68X_IAQ_ACCURACY_LOW] = "low accuracy",
-		[BME68X_IAQ_ACCURACY_MEDIUM] = "medium accuracy",
-		[BME68X_IAQ_ACCURACY_HIGH] = "high accuracy",
+		[MY_BME68X_IAQ_ACCURACY_UNRELIABLE] = "unreliable",
+		[MY_BME68X_IAQ_ACCURACY_LOW] = "low accuracy",
+		[MY_BME68X_IAQ_ACCURACY_MEDIUM] = "medium accuracy",
+		[MY_BME68X_IAQ_ACCURACY_HIGH] = "high accuracy",
 	};
 	static char const *stab2str[] = {
-		[BME68X_IAQ_STAB_ONGOING] = "on-going",
-		[BME68X_IAQ_STAB_FINISHED] = "finished",
+		[MY_BME68X_IAQ_STAB_ONGOING] = "on-going",
+		[MY_BME68X_IAQ_STAB_FINISHED] = "finished",
 	};
 
 	struct iaq_output iaq_output;

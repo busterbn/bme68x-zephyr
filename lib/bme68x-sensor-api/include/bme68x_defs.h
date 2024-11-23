@@ -96,11 +96,11 @@
  * - make it configurable once and for all with Kconfig
  * - prefer the fixed-point variant
  */
-#ifdef CONFIG_BME68X_SENSOR_API_FLOAT
+#ifdef CONFIG_MY_BME68X_SENSOR_API_FLOAT
 #define BME68X_USE_FPU
-#define BME68X_SENSOR_API_FLOAT 1
+#define MY_BME68X_SENSOR_API_FLOAT 1
 #else
-#define BME68X_SENSOR_API_FLOAT 0
+#define MY_BME68X_SENSOR_API_FLOAT 0
 #endif
 
 /* Period between two polls (value can be given by user) */
